@@ -1,10 +1,12 @@
-// db.js — database connect aur setup yahan hota hai
 const Database = require('better-sqlite3');
+const path = require('path');
 
-// Ye file-based database hai, "expenses.db" naam ki file bane gi is folder mein
-const db = new Database('expenses.db');
+const dbPath = process.env.VERCEL
+  ? path.join('/tmp', 'expenses.db')
+  : path.join(__dirname, 'expenses.db');
 
-// Agar table pehle se nahi hai to bana do (sirf pehli baar chalega)
+const db = new Database(dbPath);
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS expenses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
