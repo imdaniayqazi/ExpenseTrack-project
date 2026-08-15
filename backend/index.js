@@ -7,7 +7,7 @@ const validateExpense = require('./middleware/validateExpense');
 const { getChatReply } = require('./groqService');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // ── Global middleware (har request ke liye chalte hain) ──
 app.use(cors());
@@ -144,6 +144,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong on the server' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend chal raha hai http://localhost:${PORT} par`);
-});
+if (require.main === module) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
